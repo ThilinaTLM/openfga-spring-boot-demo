@@ -26,7 +26,7 @@ security:
   jwt:
     secret: aDa85vK8JDNlcI6NiWzYYsK5jpHsOoLRhIcW0XnAv9UNnJtT7KLYg6UpHw3x4FO2
     expiration: 86400000
-    refreshExpiration: 604800000
+    refresh-expiration: 604800000
 
 springdoc:
   api-docs:
