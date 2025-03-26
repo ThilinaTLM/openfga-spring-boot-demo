@@ -26,23 +26,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-    
+
     @Operation(summary = "Register a new user", description = "Creates a new user account and returns authentication details")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "User registered successfully", 
+            @ApiResponse(responseCode = "200", description = "User registered successfully",
                     content = @Content(schema = @Schema(implementation = SignInDto.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid input")
+            @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     @PostMapping("/signup")
     public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpFormDto request) {
         return ResponseEntity.ok(authService.register(request));
     }
-    
+
     @Operation(summary = "Authenticate user", description = "Authenticates a user and returns authentication details")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Authentication successful", 
+            @ApiResponse(responseCode = "200", description = "Authentication successful",
                     content = @Content(schema = @Schema(implementation = SignInDto.class))),
-        @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
     @PostMapping("/signin")
     public ResponseEntity<SignInDto> login(@RequestBody @Valid SignInFormDto request) {
