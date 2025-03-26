@@ -1,0 +1,38 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fga-demo-app
+    username: postgres
+    password: r7QPQ9gugRnjXntO
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    enabled: true
+    change-log: classpath:changelog/changelog.xml
+    drop-first: false
+
+security:
+  jwt:
+    secret: aDa85vK8JDNlcI6NiWzYYsK5jpHsOoLRhIcW0XnAv9UNnJtT7KLYg6UpHw3x4FO2
+    expiration: 86400000
+    refreshExpiration: 604800000
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /docs/api
+  swagger-ui:
+    enabled: true
+    path: /docs/ui
+  show-actuator: true
