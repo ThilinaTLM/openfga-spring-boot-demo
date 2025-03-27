@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
-public class AppUserDetailsService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     private final UserRepo userRepo;
 
@@ -26,5 +26,10 @@ public class AppUserDetailsService implements UserDetailsService {
                 user.getPasswordHash(),
                 new ArrayList<>()
         );
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepo.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 } 

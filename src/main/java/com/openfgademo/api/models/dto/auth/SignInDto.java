@@ -1,5 +1,6 @@
 package com.openfgademo.api.models.dto.auth;
 
+import com.openfgademo.api.models.dto.user.UserDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,6 @@ public class SignInDto {
     @Schema(description = "JWT authentication token", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
     private String token;
 
-    @Schema(description = "JWT refresh token for obtaining a new authentication token", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
-    private String refreshToken;
+    @Schema(description = "User details")
+    private UserDto user;
 }

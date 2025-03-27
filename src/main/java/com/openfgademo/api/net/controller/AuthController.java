@@ -27,7 +27,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Operation(summary = "Register a new user", description = "Creates a new user account and returns authentication details")
+    @Operation(summary = "SignUp", description = "Creates a new user account and returns authentication details")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User registered successfully",
                     content = @Content(schema = @Schema(implementation = SignInDto.class))),
@@ -38,7 +38,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(request));
     }
 
-    @Operation(summary = "Authenticate user", description = "Authenticates a user and returns authentication details")
+    @Operation(summary = "SignIn", description = "Authenticates a user and returns authentication details")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Authentication successful",
                     content = @Content(schema = @Schema(implementation = SignInDto.class))),

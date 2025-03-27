@@ -1,6 +1,7 @@
 package com.openfgademo.api.utils;
 
 import com.openfgademo.api.config.properties.JwtProperties;
+import com.openfgademo.api.data.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -54,14 +55,9 @@ public class JwtTokenUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername(), jwtProperties.getExpiration());
-    }
-
-    public String generateRefreshToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername(), jwtProperties.getRefreshExpiration());
+        return createToken(claims, user.getEmail(), jwtProperties.getExpiration());
     }
 
     private String createToken(Map<String, Object> claims, String subject, Long expiration) {

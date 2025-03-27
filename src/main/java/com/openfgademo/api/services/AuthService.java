@@ -1,5 +1,6 @@
 package com.openfgademo.api.services;
 
+import com.openfgademo.api.data.entity.User;
 import com.openfgademo.api.data.repo.UserRepo;
 import com.openfgademo.api.models.common.AppException;
 import com.openfgademo.api.models.dto.auth.SignInDto;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
-    private final AppUserDetailsService userDetailsService;
+    private final UserService userDetailsService;
 
     public UserDto register(SignUpFormDto request) {
         if (userRepo.findByEmail(request.getEmail()).isPresent()) {
@@ -48,13 +48,12 @@ public class AuthService {
                         request.getEmail(),
                         request.getPassword()));
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        String jwtToken = jwtTokenUtil.generateToken(userDetails);
-        String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
+        User user = userDetailsService.getUserByEmail(request.getEmail());
+        String jwtToken = jwtTokenUtil.generateToken(user);
 
         return SignInDto.builder()
                 .token(jwtToken)
-                .refreshToken(refreshToken)
+                .user(UserDto.fromEntity(user))
                 .build();
     }
 }

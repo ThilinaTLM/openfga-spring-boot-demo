@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class SignInFormDto {
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
-    @Schema(description = "User's email address", example = "user@example.com")
+    @Schema(description = "User's email address", example = "john.doe@example.com")
     private String email;
 
     @NotBlank(message = "Password is required")
