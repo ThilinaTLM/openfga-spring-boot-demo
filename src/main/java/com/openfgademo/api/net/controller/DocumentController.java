@@ -4,6 +4,7 @@ import com.openfgademo.api.models.dto.document.DocumentDto;
 import com.openfgademo.api.models.dto.document.DocumentFormDto;
 import com.openfgademo.api.models.dto.document.DocumentQueryDto;
 import com.openfgademo.api.services.DocumentService;
+import com.openfgademo.api.utils.AuthUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.UUID;
 public class DocumentController {
 
     private final DocumentService documentService;
+    private final AuthUtils authUtils;
 
     @Operation(summary = "Get document by ID", description = "Retrieves a document by its unique identifier")
     @ApiResponses(value = {
@@ -92,6 +95,7 @@ public class DocumentController {
             @ApiResponse(responseCode = "204", description = "Document deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Document not found")
     })
+    @PreAuthorize("@fga.check('document', #id, 'owner', 'user', @authUtils.getCurrentUserId())")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDocument(@PathVariable UUID id) {
         documentService.deleteDocument(id);
