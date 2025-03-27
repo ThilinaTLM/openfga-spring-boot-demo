@@ -19,14 +19,19 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil {
 
+    private static final String EMAIL_CLAIM = "email";
     private final JwtProperties jwtProperties;
 
     public JwtTokenUtil(JwtProperties jwtProperties) {
         this.jwtProperties = jwtProperties;
     }
 
-    public String extractUsername(String token) {
+    public String extractUserId(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public String extractEmail(String token) {
+        return extractClaim(token, claims -> claims.get(EMAIL_CLAIM, String.class));
     }
 
     public Date extractExpiration(String token) {
@@ -57,7 +62,8 @@ public class JwtTokenUtil {
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, user.getEmail(), jwtProperties.getExpiration());
+        claims.put(EMAIL_CLAIM, user.getEmail());
+        return createToken(claims, user.getId().toString(), jwtProperties.getExpiration());
     }
 
     private String createToken(Map<String, Object> claims, String subject, Long expiration) {
@@ -71,7 +77,7 @@ public class JwtTokenUtil {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        final String email = extractEmail(token);
+        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 } 

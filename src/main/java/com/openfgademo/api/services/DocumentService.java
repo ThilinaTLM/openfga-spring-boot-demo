@@ -29,6 +29,7 @@ public class DocumentService {
 
     private final DocumentRepo documentRepo;
     private final UserRepo userRepo;
+    private final OpenFgaService openFgaService;
 
     /**
      * Get a document by its ID
@@ -105,6 +106,9 @@ public class DocumentService {
 
         Document document = formDto.toEntity(owner, UUID.randomUUID());
         Document savedDocument = documentRepo.save(document);
+
+        // Assign owner relationship in OpenFGA
+        openFgaService.setDocumentOwner("user:" + owner.getId().toString(), "document:" + savedDocument.getId().toString());
 
         return DocumentDto.fromEntity(savedDocument);
     }
