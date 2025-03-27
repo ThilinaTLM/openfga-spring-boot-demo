@@ -25,7 +25,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
-    private final UserService userDetailsService;
 
     public UserDto register(SignUpFormDto request) {
         if (userRepo.findByEmail(request.getEmail()).isPresent()) {
@@ -48,7 +47,8 @@ public class AuthService {
                         request.getEmail(),
                         request.getPassword()));
 
-        User user = userDetailsService.getUserByEmail(request.getEmail());
+        User user = userRepo.findByEmail(request.getEmail())
+                .orElseThrow(() -> new AppException("User not found", HttpStatus.UNAUTHORIZED));
         String jwtToken = jwtTokenUtil.generateToken(user);
 
         return SignInDto.builder()
