@@ -1,6 +1,9 @@
 networks:
   openfga:
 
+volumes:
+  openfga-demo-data:
+
 services:
   postgres:
     image: postgres:14
@@ -62,6 +65,3 @@ services:
       - "8081:8081"
       # Needed for the playground (Do not enable in prod!)
       - "3000:3000"
-
-volumes:
-  openfga-demo-data:

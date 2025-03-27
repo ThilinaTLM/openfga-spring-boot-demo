@@ -37,6 +37,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.6.0")
+    implementation("dev.openfga:openfga-spring-boot-starter:0.2.0")
 }
 
 tasks.withType<Test> {
