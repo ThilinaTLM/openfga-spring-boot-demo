@@ -2,8 +2,10 @@ package com.openfgademo.api.services;
 
 import com.openfgademo.api.data.entity.User;
 import com.openfgademo.api.data.repo.UserRepo;
+import com.openfgademo.api.models.common.AppException;
 import com.openfgademo.api.models.dto.user.UserDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,13 +36,19 @@ public class UserService implements UserDetailsService {
 
     public UserDto getUserByEmail(String email) {
         var user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+                .orElseThrow(() -> new AppException(
+                        "User not found with email: " + email,
+                        HttpStatus.NOT_FOUND
+                ));
         return UserDto.fromEntity(user);
     }
 
     public UserDto getUserById(UUID id) {
         var user = userRepo.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new AppException(
+                        "User not found with id: " + id,
+                        HttpStatus.NOT_FOUND
+                ));
         return UserDto.fromEntity(user);
     }
 
