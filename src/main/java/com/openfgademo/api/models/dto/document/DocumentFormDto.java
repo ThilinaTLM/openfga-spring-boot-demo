@@ -29,9 +29,6 @@ public class DocumentFormDto {
     @Size(max = 10000, message = "Content cannot exceed 10000 characters")
     private String content;
 
-    @Schema(description = "Owner ID (required for creation, ignored during update)", example = "123e4567-e89b-12d3-a456-426614174000")
-    private UUID ownerId;
-
     /**
      * Converts the DTO to a new Document entity
      *

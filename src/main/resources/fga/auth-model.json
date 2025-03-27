@@ -18,11 +18,16 @@
           "member": {
             "directly_related_user_types": [
               {
-                "type": "user"
+                "type": "user",
+                "condition": ""
               }
-            ]
+            ],
+            "module": "",
+            "source_info": null
           }
-        }
+        },
+        "module": "",
+        "source_info": null
       }
     },
     {
@@ -30,6 +35,13 @@
       "relations": {
         "can_change_owner": {
           "computedUserset": {
+            "object": "",
+            "relation": "owner"
+          }
+        },
+        "can_delete": {
+          "computedUserset": {
+            "object": "",
             "relation": "owner"
           }
         },
@@ -38,16 +50,19 @@
             "child": [
               {
                 "computedUserset": {
+                  "object": "",
                   "relation": "viewer"
                 }
               },
               {
                 "computedUserset": {
+                  "object": "",
                   "relation": "editor"
                 }
               },
               {
                 "computedUserset": {
+                  "object": "",
                   "relation": "owner"
                 }
               }
@@ -56,6 +71,7 @@
         },
         "can_share": {
           "computedUserset": {
+            "object": "",
             "relation": "owner"
           }
         },
@@ -64,80 +80,111 @@
             "child": [
               {
                 "computedUserset": {
+                  "object": "",
                   "relation": "editor"
                 }
               },
               {
                 "computedUserset": {
+                  "object": "",
                   "relation": "owner"
                 }
               }
             ]
           }
         },
+        "editor": {
+          "this": {}
+        },
         "owner": {
           "this": {}
         },
         "viewer": {
-          "this": {}
-        },
-        "editor": {
           "this": {}
         }
       },
       "metadata": {
         "relations": {
           "can_change_owner": {
-            "directly_related_user_types": []
+            "directly_related_user_types": [],
+            "module": "",
+            "source_info": null
+          },
+          "can_delete": {
+            "directly_related_user_types": [],
+            "module": "",
+            "source_info": null
           },
           "can_read": {
-            "directly_related_user_types": []
+            "directly_related_user_types": [],
+            "module": "",
+            "source_info": null
           },
           "can_share": {
-            "directly_related_user_types": []
+            "directly_related_user_types": [],
+            "module": "",
+            "source_info": null
           },
           "can_write": {
-            "directly_related_user_types": []
-          },
-          "owner": {
-            "directly_related_user_types": [
-              {
-                "type": "user"
-              }
-            ]
-          },
-          "viewer": {
-            "directly_related_user_types": [
-              {
-                "type": "user"
-              },
-              {
-                "type": "user",
-                "wildcard": {}
-              },
-              {
-                "type": "group",
-                "relation": "member"
-              }
-            ]
+            "directly_related_user_types": [],
+            "module": "",
+            "source_info": null
           },
           "editor": {
             "directly_related_user_types": [
               {
-                "type": "user"
+                "type": "user",
+                "condition": ""
               },
               {
                 "type": "user",
-                "wildcard": {}
+                "wildcard": {},
+                "condition": ""
               },
               {
                 "type": "group",
-                "relation": "member"
+                "relation": "member",
+                "condition": ""
               }
-            ]
+            ],
+            "module": "",
+            "source_info": null
+          },
+          "owner": {
+            "directly_related_user_types": [
+              {
+                "type": "user",
+                "condition": ""
+              }
+            ],
+            "module": "",
+            "source_info": null
+          },
+          "viewer": {
+            "directly_related_user_types": [
+              {
+                "type": "user",
+                "condition": ""
+              },
+              {
+                "type": "user",
+                "wildcard": {},
+                "condition": ""
+              },
+              {
+                "type": "group",
+                "relation": "member",
+                "condition": ""
+              }
+            ],
+            "module": "",
+            "source_info": null
           }
-        }
+        },
+        "module": "",
+        "source_info": null
       }
     }
-  ]
+  ],
+  "conditions": {}
 }

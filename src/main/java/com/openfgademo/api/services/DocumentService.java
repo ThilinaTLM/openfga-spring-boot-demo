@@ -96,19 +96,16 @@ public class DocumentService {
      * @return Created document DTO
      */
     @Transactional
-    public DocumentDto createDocument(DocumentFormDto formDto) {
-        if (formDto.getOwnerId() == null) {
-            throw new AppException("Owner ID is required", HttpStatus.BAD_REQUEST);
-        }
-
-        User owner = userRepo.findById(formDto.getOwnerId())
+    public DocumentDto createDocument(UUID userId, DocumentFormDto formDto) {
+        User owner = userRepo.findById(userId)
                 .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
 
         Document document = formDto.toEntity(owner, UUID.randomUUID());
         Document savedDocument = documentRepo.save(document);
 
         // Assign owner relationship in OpenFGA
-        openFgaService.setDocumentOwner("user:" + owner.getId().toString(), "document:" + savedDocument.getId().toString());
+        openFgaService.createRelationship("user:" + owner.getId().toString(), "owner",
+                "document:" + savedDocument.getId().toString());
 
         return DocumentDto.fromEntity(savedDocument);
     }
@@ -138,10 +135,13 @@ public class DocumentService {
      */
     @Transactional
     public void deleteDocument(UUID id) {
-        if (!documentRepo.existsById(id)) {
-            throw new AppException("Document not found", HttpStatus.NOT_FOUND);
-        }
+        Document document = documentRepo.findById(id)
+                .orElseThrow(() -> new AppException("Document not found", HttpStatus.NOT_FOUND));
+
+        // Remove all relationships in OpenFGA before deleting the document
+//        String documentRef = "document:" + document.getId().toString();
+//        openFgaService.removeRelationship("*", "*", documentRef);
 
         documentRepo.deleteById(id);
     }
-} 
+}

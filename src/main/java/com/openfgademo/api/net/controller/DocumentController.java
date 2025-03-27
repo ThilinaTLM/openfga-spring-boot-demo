@@ -73,7 +73,8 @@ public class DocumentController {
     })
     @PostMapping
     public ResponseEntity<DocumentDto> createDocument(@RequestBody @Valid DocumentFormDto formDto) {
-        DocumentDto createdDocument = documentService.createDocument(formDto);
+        var userId = authUtils.getCurrentUserId();
+        DocumentDto createdDocument = documentService.createDocument(userId, formDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDocument);
     }
 
@@ -95,10 +96,10 @@ public class DocumentController {
             @ApiResponse(responseCode = "204", description = "Document deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Document not found")
     })
-    @PreAuthorize("@fga.check('document', #id, 'owner', 'user', @authUtils.getCurrentUserId())")
+    @PreAuthorize("@fga.check('document', #id, 'can_delete', 'user', @authUtils.getCurrentUserId())")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDocument(@PathVariable UUID id) {
         documentService.deleteDocument(id);
         return ResponseEntity.noContent().build();
     }
-} 
+}

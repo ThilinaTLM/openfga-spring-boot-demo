@@ -10,9 +10,10 @@ type group
 type document
   relations
     define can_change_owner: owner
+    define can_delete: owner
     define can_read: viewer or editor or owner
     define can_share: owner
     define can_write: editor or owner
+    define editor: [user, user:*, group#member]
     define owner: [user]
     define viewer: [user, user:*, group#member]
-    define editor: [user, user:*, group#member]
