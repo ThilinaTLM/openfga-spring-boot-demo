@@ -2,7 +2,6 @@ package com.openfgademo.api.services;
 
 import dev.openfga.sdk.api.client.OpenFgaClient;
 import dev.openfga.sdk.api.client.model.ClientTupleKey;
-import dev.openfga.sdk.api.client.model.ClientWriteResponse;
 import dev.openfga.sdk.errors.FgaInvalidParameterException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AuthorizationServiceException;
@@ -32,7 +31,7 @@ public class OpenFgaService {
                     .relation(relation)
                     ._object(object);
 
-            ClientWriteResponse response = fgaClient.writeTuples(List.of(tuple)).get();
+            fgaClient.writeTuples(List.of(tuple)).get();
         } catch (FgaInvalidParameterException | InterruptedException | ExecutionException e) {
             throw new AuthorizationServiceException("Failed to create relationship", e);
         }
@@ -53,7 +52,7 @@ public class OpenFgaService {
                     .relation(relation)
                     ._object(object);
 
-            ClientWriteResponse response = fgaClient.deleteTuples(List.of(tuple)).get();
+            fgaClient.deleteTuples(List.of(tuple)).get();
         } catch (FgaInvalidParameterException | InterruptedException | ExecutionException e) {
             throw new AuthorizationServiceException("Failed to remove relationship", e);
         }
