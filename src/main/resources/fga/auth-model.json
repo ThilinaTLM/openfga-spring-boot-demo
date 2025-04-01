@@ -18,61 +18,53 @@
           "member": {
             "directly_related_user_types": [
               {
-                "type": "user",
-                "condition": ""
+                "type": "user"
+              },
+              {
+                "type": "group",
+                "relation": "member"
               }
-            ],
-            "module": "",
-            "source_info": null
+            ]
           }
-        },
-        "module": "",
-        "source_info": null
+        }
       }
     },
     {
       "type": "document",
       "relations": {
+        "owner": {
+          "this": {}
+        },
+        "editor": {
+          "this": {}
+        },
+        "viewer": {
+          "this": {}
+        },
         "can_change_owner": {
           "computedUserset": {
-            "object": "",
             "relation": "owner"
           }
         },
         "can_delete": {
           "computedUserset": {
-            "object": "",
             "relation": "owner"
           }
         },
-        "can_read": {
+        "can_share": {
           "union": {
             "child": [
               {
                 "computedUserset": {
-                  "object": "",
-                  "relation": "viewer"
-                }
-              },
-              {
-                "computedUserset": {
-                  "object": "",
-                  "relation": "editor"
-                }
-              },
-              {
-                "computedUserset": {
-                  "object": "",
                   "relation": "owner"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "editor"
                 }
               }
             ]
-          }
-        },
-        "can_share": {
-          "computedUserset": {
-            "object": "",
-            "relation": "owner"
           }
         },
         "can_write": {
@@ -80,111 +72,91 @@
             "child": [
               {
                 "computedUserset": {
-                  "object": "",
-                  "relation": "editor"
+                  "relation": "owner"
                 }
               },
               {
                 "computedUserset": {
-                  "object": "",
-                  "relation": "owner"
+                  "relation": "editor"
                 }
               }
             ]
           }
         },
-        "editor": {
-          "this": {}
-        },
-        "owner": {
-          "this": {}
-        },
-        "viewer": {
-          "this": {}
+        "can_read": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "owner"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "editor"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "viewer"
+                }
+              }
+            ]
+          }
         }
       },
       "metadata": {
         "relations": {
-          "can_change_owner": {
-            "directly_related_user_types": [],
-            "module": "",
-            "source_info": null
-          },
-          "can_delete": {
-            "directly_related_user_types": [],
-            "module": "",
-            "source_info": null
-          },
-          "can_read": {
-            "directly_related_user_types": [],
-            "module": "",
-            "source_info": null
-          },
-          "can_share": {
-            "directly_related_user_types": [],
-            "module": "",
-            "source_info": null
-          },
-          "can_write": {
-            "directly_related_user_types": [],
-            "module": "",
-            "source_info": null
+          "owner": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              },
+              {
+                "type": "group",
+                "relation": "member"
+              }
+            ]
           },
           "editor": {
             "directly_related_user_types": [
               {
-                "type": "user",
-                "condition": ""
-              },
-              {
-                "type": "user",
-                "wildcard": {},
-                "condition": ""
+                "type": "user"
               },
               {
                 "type": "group",
-                "relation": "member",
-                "condition": ""
+                "relation": "member"
               }
-            ],
-            "module": "",
-            "source_info": null
-          },
-          "owner": {
-            "directly_related_user_types": [
-              {
-                "type": "user",
-                "condition": ""
-              }
-            ],
-            "module": "",
-            "source_info": null
+            ]
           },
           "viewer": {
             "directly_related_user_types": [
               {
-                "type": "user",
-                "condition": ""
-              },
-              {
-                "type": "user",
-                "wildcard": {},
-                "condition": ""
+                "type": "user"
               },
               {
                 "type": "group",
-                "relation": "member",
-                "condition": ""
+                "relation": "member"
               }
-            ],
-            "module": "",
-            "source_info": null
+            ]
+          },
+          "can_change_owner": {
+            "directly_related_user_types": []
+          },
+          "can_delete": {
+            "directly_related_user_types": []
+          },
+          "can_share": {
+            "directly_related_user_types": []
+          },
+          "can_write": {
+            "directly_related_user_types": []
+          },
+          "can_read": {
+            "directly_related_user_types": []
           }
-        },
-        "module": "",
-        "source_info": null
+        }
       }
     }
-  ],
-  "conditions": {}
+  ]
 }
