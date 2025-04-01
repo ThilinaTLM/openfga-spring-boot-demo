@@ -8,6 +8,7 @@ import com.openfgademo.api.models.common.AppException;
 import com.openfgademo.api.models.dto.document.DocumentDto;
 import com.openfgademo.api.models.dto.document.DocumentFormDto;
 import com.openfgademo.api.models.dto.document.DocumentQueryDto;
+import com.openfgademo.api.models.openfga.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -103,9 +104,25 @@ public class DocumentService {
         Document document = formDto.toEntity(owner, UUID.randomUUID());
         Document savedDocument = documentRepo.save(document);
 
-        // Assign owner relationship in OpenFGA
-        openFgaService.createRelationship("user:" + owner.getId().toString(), "owner",
-                "document:" + savedDocument.getId().toString());
+        // assign owner relationship
+        openFgaService.createRelationship(FgaTuple.of(
+                FgaObject.of(FgaObjectType.USER, owner.getId().toString()),
+                FgaRelation.OWNER,
+                FgaObject.of(FgaObjectType.DOCUMENT, savedDocument.getId().toString())));
+
+        // assign group relationships
+        openFgaService.createRelationship(FgaTuple.of(
+                FgaObject.of(FgaGroup.ADMIN, FgaRelation.MEMBER),
+                FgaRelation.OWNER,
+                FgaObject.of(FgaObjectType.DOCUMENT, savedDocument.getId().toString())));
+        openFgaService.createRelationship(FgaTuple.of(
+                FgaObject.of(FgaGroup.EDITOR, FgaRelation.MEMBER),
+                FgaRelation.EDITOR,
+                FgaObject.of(FgaObjectType.DOCUMENT, savedDocument.getId().toString())));
+        openFgaService.createRelationship(FgaTuple.of(
+                FgaObject.of(FgaGroup.VIEWER, FgaRelation.MEMBER),
+                FgaRelation.VIEWER,
+                FgaObject.of(FgaObjectType.DOCUMENT, savedDocument.getId().toString())));
 
         return DocumentDto.fromEntity(savedDocument);
     }
@@ -135,12 +152,8 @@ public class DocumentService {
      */
     @Transactional
     public void deleteDocument(UUID id) {
-        Document document = documentRepo.findById(id)
+        documentRepo.findById(id)
                 .orElseThrow(() -> new AppException("Document not found", HttpStatus.NOT_FOUND));
-
-        // Remove all relationships in OpenFGA before deleting the document
-//        String documentRef = "document:" + document.getId().toString();
-//        openFgaService.removeRelationship("*", "*", documentRef);
 
         documentRepo.deleteById(id);
     }

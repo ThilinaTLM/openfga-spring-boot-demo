@@ -7,6 +7,7 @@ import com.openfgademo.api.models.dto.auth.SignInDto;
 import com.openfgademo.api.models.dto.auth.SignInFormDto;
 import com.openfgademo.api.models.dto.auth.SignUpFormDto;
 import com.openfgademo.api.models.dto.user.UserDto;
+import com.openfgademo.api.models.openfga.*;
 import com.openfgademo.api.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
+    private final OpenFgaService openFgaService;
 
     public UserDto register(SignUpFormDto request) {
         if (userRepo.findByEmail(request.getEmail()).isPresent()) {
@@ -38,6 +40,13 @@ public class AuthService {
                 passwordEncoder.encode(request.getPassword()));
 
         var savedUser = userRepo.save(user);
+
+        // add to user to viewer group
+        openFgaService.createRelationship(FgaTuple.of(
+                FgaObject.of(FgaObjectType.USER, savedUser.getId().toString()),
+                FgaRelation.MEMBER,
+                FgaObject.of(FgaGroup.VIEWER)));
+
         return UserDto.fromEntity(savedUser);
     }
 
