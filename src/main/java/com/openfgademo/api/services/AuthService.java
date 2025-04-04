@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -64,5 +65,10 @@ public class AuthService {
                 .token(jwtToken)
                 .user(UserDto.fromEntity(user))
                 .build();
+    }
+
+    public List<String> getRolesByUser(String userId) {
+        return openFgaService.getObjects(FgaObject.of(FgaObjectType.USER, userId), FgaRelation.MEMBER,
+                FgaObjectType.GROUP);
     }
 }

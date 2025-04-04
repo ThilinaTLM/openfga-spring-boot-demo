@@ -72,19 +72,21 @@ public class DocumentController {
             @ApiResponse(responseCode = "404", description = "Owner not found")
     })
     @PostMapping
+    @PreAuthorize("@fga.check('group', 'admin', 'member', 'user', @authUtils.getCurrentUserId())")
     public ResponseEntity<DocumentDto> createDocument(@RequestBody @Valid DocumentFormDto formDto) {
         var userId = authUtils.getCurrentUserId();
         DocumentDto createdDocument = documentService.createDocument(userId, formDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDocument);
     }
 
+    @PutMapping("/{id}")
     @Operation(summary = "Update document", description = "Updates an existing document")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Document updated successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "Document not found")
     })
-    @PutMapping("/{id}")
+    @PreAuthorize("@fga.check('document', #id, 'can_write', 'user', @authUtils.getCurrentUserId())")
     public ResponseEntity<DocumentDto> updateDocument(
             @PathVariable UUID id,
             @RequestBody @Valid DocumentFormDto formDto) {
